@@ -9,7 +9,11 @@
 #include "../Logger/Logger.h"
 #include "../Config/Config.h"
 #include "ThreadPool/ThreadPool.h"
-#include <thread>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <errno.h>
 
 using namespace std;
 
@@ -19,13 +23,16 @@ public:
     Server(Config &config, Logger &logger) : config{config}, logger{logger} {};
     void start();
     void stop();
-    void threadLoop() const;
 
 private:
     Config &config;
     Logger &logger;
     ThreadPool *threadPool;
     bool running = true;
+
+    int openSocket(int portNumber);
+    void socketError(const char * msg, bool shouldThrow = true);
+    struct sockaddr_in getServerAddress(int port);
 };
 
 
