@@ -16,6 +16,7 @@ public:
     int getPort();
     string getHost();
     int getMaxConnections();
+    int getConcurrentConnections();
 
 private:
     map<string, string> properties;

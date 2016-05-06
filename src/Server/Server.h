@@ -8,13 +8,10 @@
 
 #include "../Logger/Logger.h"
 #include "../Config/Config.h"
-#include "ListeningThread/ListeningThread.h"
-#include <array>
-#include <vector>
+#include "ThreadPool/ThreadPool.h"
+#include <thread>
 
 using namespace std;
-
-const int THREAD_POOL_COUNT = 50;
 
 class Server {
 
@@ -22,12 +19,13 @@ public:
     Server(Config &config, Logger &logger) : config{config}, logger{logger} {};
     void start();
     void stop();
+    void threadLoop() const;
 
 private:
     Config &config;
     Logger &logger;
-
-    vector<ListeningThread*> threadPool;
+    ThreadPool *threadPool;
+    bool running = true;
 };
 
 
