@@ -4,8 +4,10 @@
 
 #include "Server.h"
 
+using namespace HttpServer;
+
 void Server::start() {
-    int socket = this->openSocket(this->config.getPort());
+    socket = this->openSocket(this->config.getPort());
 
     this->threadPool = new ThreadPool(this->config.getConcurrentConnections());
 
@@ -15,12 +17,15 @@ void Server::start() {
         int clientSocket = accept(socket, (struct sockaddr *) &clientAddress, &clientLength);
         if (clientSocket < 0) this->socketError("Error opening client socket", false);
 
+        Processor *processor = new Processor(logger, clientSocket);
+        threadPool->addTask(processor);
     }
 }
 
 void Server::stop() {
     this->running = false;
     this->threadPool->stop();
+    close(socket);
 }
 
 int Server::openSocket(int portNumber) {
@@ -30,7 +35,7 @@ int Server::openSocket(int portNumber) {
     sockFd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockFd < 0) this->socketError("Error opening socket");
 
-    if (bind(sockFd, (struct sockaddr *) &serverAddress, sizeof(serverAddress)) < 0)
+    if (::bind(sockFd, (struct sockaddr *) &serverAddress, sizeof(serverAddress)) < 0)
         this->socketError("Error binding socket");
 
     if (listen(sockFd, 100) < 0) this->socketError("Error binding socket");
@@ -47,7 +52,7 @@ struct sockaddr_in Server::getServerAddress(int port) {
     return serverAddress;
 }
 
-void Server::socketError(const char * msg, bool shouldThrow = true) {
+void Server::socketError(const char * msg, bool shouldThrow) {
     char err[500];
     sprintf(err, "%s: %s", msg, strerror(errno));
     this->logger.error(err);

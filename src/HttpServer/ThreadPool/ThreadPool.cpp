@@ -4,6 +4,8 @@
 
 #include "ThreadPool.h"
 
+using namespace HttpServer::ThreadPool;
+
 ThreadPool::ThreadPool(int size) {
     this->tasks = new asio::io_service::work(this->ioService);
     for (int i = 0; i < size; i ++) {

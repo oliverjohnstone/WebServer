@@ -4,8 +4,9 @@
 
 #include "Task.h"
 
+using namespace HttpServer::ThreadPool;
+
 void Task::run(ThreadPool *pool) const {
-    cout << "Hello World" << endl;
     pool->taskFinished(this->taskId);
 }
 

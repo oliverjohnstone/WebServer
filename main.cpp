@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
             server.start();
         }
     } catch (std::exception &e) {
-        logger.error(e.what());
+//        logger.error(e.what());
         exitCode = 2;
     }
 
