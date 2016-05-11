@@ -4,12 +4,12 @@
 
 #include "Response.h"
 
-void HttpServer::Response::Response::setStatus(int i) {
-
+HttpServer::Response::Response::Response(HttpServer::Request::Request &request) : request(request) {
 }
 
+void HttpServer::Response::Response::setStatus(int status) {
+}
 
 void HttpServer::Response::Response::send(HttpServer::Connection *pConnection) {
 
 }
-

@@ -6,15 +6,22 @@
 #define WEBSERVER_RESPONSE_H
 
 #include "../Connection.h"
+#include "../Request/Request.h"
 
 namespace HttpServer {
     namespace Response {
+
         class Response {
         public:
 
-            void setStatus(int i);
+            Response(HttpServer::Request::Request &request);
 
-            void send(HttpServer::Connection *pConnection);
+            void setStatus(int status);
+
+            void send(Connection *pConnection);
+
+        private:
+            HttpServer::Request::Request &request;
         };
     }
 }

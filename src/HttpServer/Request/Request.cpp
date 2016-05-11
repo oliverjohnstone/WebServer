@@ -4,6 +4,14 @@
 #include <boost/thread/lock_options.hpp>
 #include "Request.h"
 
+HttpServer::Request::Request::Request(HttpServer::Connection *pConnection) {
+    this->pConnection = pConnection;
+    if (!this->parseHeaders()) return;
+    parseAccepts(this->accepts, "Accept");
+    parseAccepts(this->encoding, "Accept-Encoding");
+    parseAccepts(this->languages, "Accept-Language");
+}
+
 bool HttpServer::Request::Request::parseHeaders() {
     if (!this->parseRequestHeader(pConnection->readLine())) return false;
     do {
@@ -19,16 +27,16 @@ bool HttpServer::Request::Request::parseRequestHeader(std::string header) {
 
     boost::split(requestParts, header, boost::is_any_of("\t "));
     if (requestParts.size() != 3) {
-        response.setStatus(400);
-        response.send(pConnection);
+//        response.setStatus(400);
+//        response.send(pConnection);
         return false;
     }
 
     boost::split(versionParts, requestParts[2], boost::is_any_of("/"));
 
     if (versionParts.size() != 2) {
-        response.setStatus(400);
-        response.send(pConnection);
+//        response.setStatus(400);
+//        response.send(pConnection);
         return false;
     }
 
@@ -37,13 +45,6 @@ bool HttpServer::Request::Request::parseRequestHeader(std::string header) {
     request.version = atof(versionParts[1].c_str());
 
     return true;
-}
-
-HttpServer::Request::Request::Request(HttpServer::Connection *pConnection) {
-    this->pConnection = pConnection;
-    if (!this->parseHeaders()) return;
-    parseAccepts(this->accepts, "Accept");
-    parseAccepts(this->encoding, "Accept-Encoding");
 }
 
 void HttpServer::Request::Request::parseAccepts(std::unordered_map<std::string, Accepts> &container, const char *header) {
@@ -89,4 +90,24 @@ HttpServer::Request::Accepts HttpServer::Request::Request::parseAcceptParams(std
     }
 
     return accept;
+}
+
+std::string &HttpServer::Request::Request::getResource() {
+    return request.resource;
+}
+
+void HttpServer::Request::Request::setUrlParameter(std::string name, std::string value) {
+    urlParameters[name] = value;
+}
+
+std::string HttpServer::Request::Request::getUrlParameter(std::string name) {
+    try {
+        return urlParameters[name];
+    } catch (std::out_of_range &e) {
+        return "";
+    }
+}
+
+void HttpServer::Request::Request::clearUrlParameters() {
+    urlParameters.clear();
 }

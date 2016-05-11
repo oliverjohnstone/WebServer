@@ -8,7 +8,6 @@
 
 #include "../Connection.h"
 #include "Headers.h"
-#include "../Response/Response.h"
 #include <boost/algorithm/string.hpp>
 #include <vector>
 #include <unordered_map>
@@ -31,20 +30,23 @@ namespace HttpServer {
         class Request {
         public:
             Request(HttpServer::Connection *pConnection);
+            std::string & getResource();
+            void setUrlParameter(std::string name, std::string value);
+            std::string getUrlParameter(std::string name);
+            void clearUrlParameters();
 
         private:
             HttpServer::Connection *pConnection;
             Headers headers;
             RequestLine request;
-            Response::Response response;
             std::unordered_map<std::string, Accepts> accepts;
             std::unordered_map<std::string, Accepts> encoding;
+            std::unordered_map<std::string, Accepts> languages;
+            std::unordered_map<std::string, std::string> urlParameters;
 
             bool parseHeaders();
             bool parseRequestHeader(string header);
             void parseAccepts(std::unordered_map<std::string, Accepts> &container, const char *header);
-            void parseLang();
-
             Accepts parseAcceptParams(std::string param);
         };
     }
