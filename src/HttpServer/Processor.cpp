@@ -3,17 +3,18 @@
 //
 
 #include "Processor.h"
+#include "Request/Request.h"
 
-using namespace HttpServer;
-
-Processor::Processor(Logger &logger, int socket) {
+HttpServer::Processor::Processor(Logger &logger, int socket) {
     pConnection = new Connection(logger, socket);
 }
 
-Processor::~Processor() {
+HttpServer::Processor::~Processor() {
     delete pConnection;
 }
 
-void Processor::run(ThreadPool::ThreadPool *pool) const {
+void HttpServer::Processor::run(ThreadPool::ThreadPool *pool) const {
+    Request::Request request(pConnection);
+
     ThreadPool::Task::run(pool);
 }

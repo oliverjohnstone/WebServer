@@ -10,15 +10,15 @@
 
 using namespace std;
 
-class ThreadPool;
-
 namespace HttpServer {
     namespace ThreadPool {
+        class ThreadPool;
+
         class Task {
         public:
             ~Task();
 
-            void run(ThreadPool *pool) const;
+            virtual void run(HttpServer::ThreadPool::ThreadPool *pool) const;
 
             void setTaskId(int id);
 

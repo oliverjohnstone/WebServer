@@ -2,7 +2,7 @@
 #include "src/Config/Config.h"
 #include "src/Config/ProgramOptions.h"
 #include "src/Logger/Logger.h"
-#include "src/Server/Server.h"
+#include "src/HttpServer/Server.h"
 
 int main(int argc, char **argv) {
     Logger logger;
@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
             exitCode = 1;
         } else {
             Config config(options.getConfigPath());
-            Server server(config, logger);
+            HttpServer::Server server(config, logger);
             server.start();
         }
     } catch (std::exception &e) {

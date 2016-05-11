@@ -9,7 +9,7 @@ using namespace HttpServer;
 void Server::start() {
     socket = this->openSocket(this->config.getPort());
 
-    this->threadPool = new ThreadPool(this->config.getConcurrentConnections());
+    this->threadPool = new ThreadPool::ThreadPool(this->config.getConcurrentConnections());
 
     while (this->running) {
         struct sockaddr_in clientAddress;
@@ -32,7 +32,7 @@ int Server::openSocket(int portNumber) {
     int sockFd;
     sockaddr_in serverAddress = this->getServerAddress(portNumber);
 
-    sockFd = socket(AF_INET, SOCK_STREAM, 0);
+    sockFd = ::socket(AF_INET, SOCK_STREAM, 0);
     if (sockFd < 0) this->socketError("Error opening socket");
 
     if (::bind(sockFd, (struct sockaddr *) &serverAddress, sizeof(serverAddress)) < 0)

@@ -144,5 +144,11 @@ Connection::Connection(Logger &logger, int socket) : logger(logger) {
     inBuffer[0] = 0;
 }
 
+bool Connection::isEof() {
+    return eof;
+}
+
+
+
 
 

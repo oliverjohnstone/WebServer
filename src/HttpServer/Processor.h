@@ -11,7 +11,7 @@
 
 namespace HttpServer {
 
-    class Processor : public Task {
+    class Processor : public ThreadPool::Task {
     public:
         Processor(Logger &logger, int socket);
 

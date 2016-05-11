@@ -34,6 +34,8 @@ namespace HttpServer {
 
         bool isOpen();
 
+        bool isEof();
+
     private:
         int socket;
         int bytesSent = 0;
