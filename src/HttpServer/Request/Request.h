@@ -23,7 +23,7 @@ namespace HttpServer {
         };
 
         struct Accepts {
-            std::string media;
+            std::string type;
             double q;
             std::unordered_map<std::string, std::string> params;
         };
@@ -38,11 +38,11 @@ namespace HttpServer {
             RequestLine request;
             Response::Response response;
             std::unordered_map<std::string, Accepts> accepts;
+            std::unordered_map<std::string, Accepts> encoding;
 
             bool parseHeaders();
             bool parseRequestHeader(string header);
-            void parseAccepts();
-            void parseEncoding();
+            void parseAccepts(std::unordered_map<std::string, Accepts> &container, const char *header);
             void parseLang();
 
             Accepts parseAcceptParams(std::string param);

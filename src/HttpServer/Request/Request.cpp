@@ -42,32 +42,33 @@ bool HttpServer::Request::Request::parseRequestHeader(std::string header) {
 HttpServer::Request::Request::Request(HttpServer::Connection *pConnection) {
     this->pConnection = pConnection;
     if (!this->parseHeaders()) return;
-    parseAccepts();
+    parseAccepts(this->accepts, "Accept");
+    parseAccepts(this->encoding, "Accept-Encoding");
 }
 
-void HttpServer::Request::Request::parseAccepts() {
-    std::string acceptsHeader = headers.getHeader("Accept");
+void HttpServer::Request::Request::parseAccepts(std::unordered_map<std::string, Accepts> &container, const char *header) {
+    std::string acceptsHeader = headers.getHeader(header);
     if (!acceptsHeader.empty()) {
         std::vector<string> types;
         boost::algorithm::split(types, acceptsHeader, boost::is_any_of(","));
 
         for (std::vector<string>::iterator it = types.begin(); it != types.end(); ++it) {
             Accepts accept = parseAcceptParams(*it);
-            accepts[accept.media] = accept;
+            container[accept.type] = accept;
         }
     }
 }
 
-Accepts HttpServer::Request::Request::parseAcceptParams(std::string param) {
-    Accepts accept;
+HttpServer::Request::Accepts HttpServer::Request::Request::parseAcceptParams(std::string param) {
+    HttpServer::Request::Accepts accept;
 
-    accept.media = param;
+    accept.type = param;
 
     if (boost::algorithm::contains(param, ";")) {
         std::vector<string> params;
         boost::algorithm::split(params, param, boost::is_any_of(";"));
         if (params.size() > 0) {
-            accept.media = params[0];
+            accept.type = params[0];
             std::vector<string>::iterator paramsIt = params.begin();
             // Ignore the first param which is actually the mime type
             paramsIt++;
