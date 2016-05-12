@@ -8,14 +8,14 @@
 #include "ThreadPool/Task.h"
 #include "../Logger/Logger.h"
 #include "Connection.h"
+#include "Router/Router.h"
 
 namespace HttpServer {
 
     class Processor : public ThreadPool::Task {
 
-
     public:
-        Processor(Logger &logger, int socket);
+        Processor(Logger &logger, int socket, HttpServer::Router::Router &router);
 
         ~Processor();
 
@@ -23,6 +23,7 @@ namespace HttpServer {
 
     private:
         Connection *pConnection;
+        HttpServer::Router::Router &router;
     };
 }
 

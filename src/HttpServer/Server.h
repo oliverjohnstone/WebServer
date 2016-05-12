@@ -35,12 +35,15 @@ namespace HttpServer {
         ThreadPool::ThreadPool *threadPool;
         bool running = true;
         int socket;
+        HttpServer::Router::Router router;
 
         int openSocket(int portNumber);
 
         void socketError(const char *msg, bool shouldThrow = true);
 
         struct sockaddr_in getServerAddress(int port);
+
+        void bootRouter();
     };
 }
 

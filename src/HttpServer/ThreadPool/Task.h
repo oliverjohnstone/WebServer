@@ -16,7 +16,7 @@ namespace HttpServer {
 
         class Task {
         public:
-            ~Task();
+            virtual ~Task();
 
             virtual void run(HttpServer::ThreadPool::ThreadPool *pool) const;
 
