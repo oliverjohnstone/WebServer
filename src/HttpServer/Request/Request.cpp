@@ -96,18 +96,40 @@ std::string &HttpServer::Request::Request::getResource() {
     return request.resource;
 }
 
-void HttpServer::Request::Request::setUrlParameter(std::string name, std::string value) {
-    urlParameters[name] = value;
+void HttpServer::Request::Request::setQueryParameter(HttpServer::Request::QueryStringParameter *param) {
+    queryStringParameters[param->getParamName()] = param;
 }
 
-std::string HttpServer::Request::Request::getUrlParameter(std::string name) {
+HttpServer::Request::QueryStringParameter *HttpServer::Request::Request::getUrlParameter(std::string name) {
     try {
-        return urlParameters[name];
+        return queryStringParameters[name];
     } catch (std::out_of_range &e) {
-        return "";
+        return nullptr;
     }
 }
 
 void HttpServer::Request::Request::clearUrlParameters() {
     urlParameters.clear();
 }
+
+HttpServer::Request::Request::~Request() {
+    clearUrlParameters();
+    clearQueryStringParameters();
+}
+
+void HttpServer::Request::Request::setUrlParameter(std::string name, std::string value) {
+    urlParameters[name] = value;
+}
+
+void HttpServer::Request::Request::clearQueryStringParameters() {
+    for (std::unordered_map<std::string, QueryStringParameter *>::iterator it = queryStringParameters.begin();
+         it != queryStringParameters.end(); ++it) {
+
+        delete (*it).second;
+    }
+    queryStringParameters.clear();
+}
+
+
+
+

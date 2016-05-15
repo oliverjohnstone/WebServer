@@ -8,6 +8,7 @@
 
 #include "../Connection.h"
 #include "Headers.h"
+#include "QueryStringParameter.h"
 #include <boost/algorithm/string.hpp>
 #include <vector>
 #include <unordered_map>
@@ -30,10 +31,13 @@ namespace HttpServer {
         class Request {
         public:
             Request(HttpServer::Connection *pConnection);
+            ~Request();
             std::string & getResource();
+            void setQueryParameter(HttpServer::Request::QueryStringParameter *param);
             void setUrlParameter(std::string name, std::string value);
-            std::string getUrlParameter(std::string name);
+            HttpServer::Request::QueryStringParameter * getUrlParameter(std::string name);
             void clearUrlParameters();
+            void clearQueryStringParameters();
 
         private:
             HttpServer::Connection *pConnection;
@@ -42,6 +46,7 @@ namespace HttpServer {
             std::unordered_map<std::string, Accepts> accepts;
             std::unordered_map<std::string, Accepts> encoding;
             std::unordered_map<std::string, Accepts> languages;
+            std::unordered_map<std::string, QueryStringParameter *> queryStringParameters;
             std::unordered_map<std::string, std::string> urlParameters;
 
             bool parseHeaders();
