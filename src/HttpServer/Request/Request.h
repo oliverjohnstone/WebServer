@@ -19,6 +19,7 @@ namespace HttpServer {
         struct RequestLine {
             std::string method;
             std::string resource;
+            std::string queryString;
             double version;
         };
 
@@ -33,6 +34,7 @@ namespace HttpServer {
             Request(HttpServer::Connection *pConnection);
             ~Request();
             std::string & getResource();
+            std::string & getQueryString();
             void setQueryParameter(HttpServer::Request::QueryStringParameter *param);
             void setUrlParameter(std::string name, std::string value);
             HttpServer::Request::QueryStringParameter * getUrlParameter(std::string name);

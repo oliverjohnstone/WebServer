@@ -6,18 +6,14 @@
 
 bool HttpServer::Middleware::BodyParser::QueryString::resolve(HttpServer::Request::Request &request,
                                                               HttpServer::Response::Response &response) {
-    std::string resource = request.getResource();
-    if (boost::algorithm::contains(resource, "?")) {
-        std::vector<std::string> parts;
-        boost::algorithm::split(parts, resource, boost::is_any_of("?"));
-        if (parts.size() >= 2) {
-            std::vector<std::string> urlParams;
-            boost::algorithm::split(parts, resource, boost::is_any_of("&"));
+    std::string qs = request.getQueryString();
+    if (!qs.empty()) {
+        std::vector<std::string> urlParams;
+        boost::algorithm::split(urlParams, qs, boost::is_any_of("&"));
 
-            std::vector<HttpServer::Request::QueryStringParameter *> parsedParams = parseParams(urlParams);
-            for (std::vector<HttpServer::Request::QueryStringParameter *>::iterator it = parsedParams.begin(); it != parsedParams.end(); ++it) {
-                request.setQueryParameter((*it));
-            }
+        std::vector<HttpServer::Request::QueryStringParameter *> parsedParams = parseParams(urlParams);
+        for (std::vector<HttpServer::Request::QueryStringParameter *>::iterator it = parsedParams.begin(); it != parsedParams.end(); ++it) {
+            request.setQueryParameter((*it));
         }
     }
 

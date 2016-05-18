@@ -24,6 +24,7 @@ bool HttpServer::Request::Request::parseHeaders() {
 
 bool HttpServer::Request::Request::parseRequestHeader(std::string header) {
     std::vector<std::string> requestParts, versionParts;
+    std::string qs = "";
 
     boost::split(requestParts, header, boost::is_any_of("\t "));
     if (requestParts.size() != 3) {
@@ -40,8 +41,15 @@ bool HttpServer::Request::Request::parseRequestHeader(std::string header) {
         return false;
     }
 
+    unsigned long qsPos = requestParts[1].find_first_of('?');
+    if (qsPos != std::string::npos) {
+        qs = requestParts[1].substr(qsPos + 1);
+        requestParts[1] = requestParts[1].substr(0, qsPos);
+    }
+
     request.method = requestParts[0];
     request.resource = requestParts[1];
+    request.queryString = qs;
     request.version = atof(versionParts[1].c_str());
 
     return true;
@@ -130,6 +138,6 @@ void HttpServer::Request::Request::clearQueryStringParameters() {
     queryStringParameters.clear();
 }
 
-
-
-
+std::string &HttpServer::Request::Request::getQueryString() {
+    return request.queryString;
+}
