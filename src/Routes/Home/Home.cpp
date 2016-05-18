@@ -8,6 +8,7 @@
 Routes::Home::Home::Home() : Route("/") {
 }
 
-void Routes::Home::Home::resolve(HttpServer::Request::Request &request, HttpServer::Response::Response &response) {
+bool Routes::Home::Home::resolve(HttpServer::Request::Request &request, HttpServer::Response::Response &response) {
     std::cout << "Home Page" << std::endl;
+    return true;
 }

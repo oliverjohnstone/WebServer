@@ -12,7 +12,7 @@ namespace Routes {
         class Home : public HttpServer::Router::Route {
         public:
             Home();
-            void resolve(HttpServer::Request::Request &request, HttpServer::Response::Response &response);
+            bool resolve(HttpServer::Request::Request &request, HttpServer::Response::Response &response);
         };
     }
 }

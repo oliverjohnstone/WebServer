@@ -12,8 +12,12 @@ namespace HttpServer {
     namespace Middleware {
         namespace BodyParser {
             class QueryString : public HttpServer::Router::Middleware {
-                void resolve(HttpServer::Request::Request &request, HttpServer::Response::Response &response);
-                void push(std::string value);
+            public:
+
+                bool resolve(HttpServer::Request::Request &request, HttpServer::Response::Response &response);
+
+            private:
+
                 std::vector<HttpServer::Request::QueryStringParameter *> & parseParams(std::vector<std::string> &params);
             };
         }

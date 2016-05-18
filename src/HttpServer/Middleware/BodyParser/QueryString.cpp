@@ -4,7 +4,7 @@
 
 #include "QueryString.h"
 
-void HttpServer::Middleware::BodyParser::QueryString::resolve(HttpServer::Request::Request &request,
+bool HttpServer::Middleware::BodyParser::QueryString::resolve(HttpServer::Request::Request &request,
                                                               HttpServer::Response::Response &response) {
     std::string resource = request.getResource();
     if (boost::algorithm::contains(resource, "?")) {
@@ -20,6 +20,8 @@ void HttpServer::Middleware::BodyParser::QueryString::resolve(HttpServer::Reques
             }
         }
     }
+
+    return false;
 }
 
 std::vector<HttpServer::Request::QueryStringParameter *> & HttpServer::Middleware::BodyParser::QueryString::parseParams(

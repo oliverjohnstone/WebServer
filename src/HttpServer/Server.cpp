@@ -4,6 +4,7 @@
 
 #include "Server.h"
 #include "../Routes/Home/Home.h"
+#include "Middleware/BodyParser/QueryString.h"
 
 using namespace HttpServer;
 
@@ -64,6 +65,7 @@ void Server::socketError(const char * msg, bool shouldThrow) {
 }
 
 void Server::bootRouter() {
+    router.use(new HttpServer::Middleware::BodyParser::QueryString());
     router.addRoute(new Routes::Home::Home());
 }
 

@@ -17,8 +17,16 @@ void HttpServer::Router::Router::addRoute(Route *pRoute) {
 void HttpServer::Router::Router::route(HttpServer::Request::Request &request, HttpServer::Response::Response &response) {
     for (std::vector<Route *>::iterator it = routes.begin(); it != routes.end(); ++it) {
         if ((*it)->canResolve(request)) {
-            (*it)->resolve(request, response);
+            if ((*it)->resolve(request, response)) {
+                break;
+            }
         }
     }
 }
+
+void HttpServer::Router::Router::use(Middleware *pMiddleware) {
+    routes.push_back(pMiddleware);
+}
+
+
 

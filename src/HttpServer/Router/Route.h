@@ -14,7 +14,7 @@ namespace HttpServer {
         class Route {
         public:
             Route(std::string routeMatch);
-            virtual void resolve(HttpServer::Request::Request &request, HttpServer::Response::Response &response) = 0;
+            virtual bool resolve(HttpServer::Request::Request &request, HttpServer::Response::Response &response) = 0;
             bool canResolve(HttpServer::Request::Request &request);
 
         private:

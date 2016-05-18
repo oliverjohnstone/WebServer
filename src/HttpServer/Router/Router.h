@@ -6,6 +6,7 @@
 #define WEBSERVER_ROUTER_H
 
 #include "Route.h"
+#include "Middleware/Middleware.h"
 #include <vector>
 
 namespace HttpServer {
@@ -14,8 +15,8 @@ namespace HttpServer {
         public:
             ~Router();
             void addRoute(Route *pRoute);
+            void use(Middleware *pMiddleware);
             void route(HttpServer::Request::Request &request, HttpServer::Response::Response &response);
-
         private:
             std::vector<Route *> routes;
         };

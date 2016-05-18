@@ -7,11 +7,15 @@
 
 #include "../../Request/Request.h"
 #include "../../Response/Response.h"
+#include "../Route.h"
 
 namespace HttpServer {
     namespace Router {
-        class Middleware {
-            virtual void resolve(HttpServer::Request::Request &request, HttpServer::Response::Response &response) = 0;
+        class Middleware : public Route {
+        public:
+            Middleware() : Route("*") { }
+
+            virtual bool resolve(HttpServer::Request::Request &request, HttpServer::Response::Response &response) = 0;
         };
     }
 }
