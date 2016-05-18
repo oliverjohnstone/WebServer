@@ -16,17 +16,17 @@ namespace HttpServer {
             QueryStringParameter(std::string paramName, std::string value);
             QueryStringParameter(std::string paramName, std::vector<std::string> value);
 
-            template<typename T> T get(int i = 0);
             std::string &getParamName();
             void push(std::string value);
+
+            int getInt(int i = 0);
+            bool getBoolean(int i = 0);
+            std::string getString(int i = 0);
+            double getDouble(int i = 0);
+
         private:
             std::string parameterName;
             std::vector<std::string> rawValue;
-
-            int getInt(int i);
-            bool getBoolean(int i);
-            std::string getString(int i);
-            double getDouble(int i);
         };
     }
 }

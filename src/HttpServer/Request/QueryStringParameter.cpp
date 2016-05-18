@@ -16,14 +16,6 @@ HttpServer::Request::QueryStringParameter::QueryStringParameter(std::string para
     parameterName = paramName;
 }
 
-template<typename T>
-T HttpServer::Request::QueryStringParameter::get(int i) {
-    if (boost::is_same<T, int>::value) return getInt(i);
-    if (boost::is_same<T, double>::value) return getDouble(i);
-    if (boost::is_same<T, bool>::value) return getBoolean(i);
-    return getString(i);
-}
-
 int HttpServer::Request::QueryStringParameter::getInt(int i) {
     return atoi(getString(i).c_str());
 }

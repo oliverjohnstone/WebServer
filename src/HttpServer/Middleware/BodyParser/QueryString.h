@@ -18,7 +18,7 @@ namespace HttpServer {
 
             private:
 
-                std::vector<HttpServer::Request::QueryStringParameter *> & parseParams(std::vector<std::string> &params);
+                std::vector<HttpServer::Request::QueryStringParameter *> parseParams(std::vector<std::string> &params);
             };
         }
     }

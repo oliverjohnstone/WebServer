@@ -107,10 +107,12 @@ void Connection::flush() {
 }
 
 void Connection::closeSocket() {
-    flush();
-    close(socket);
-    eof = true;
-    isSocketOpen = false;
+    if (isSocketOpen) {
+        flush();
+        close(socket);
+        eof = true;
+        isSocketOpen = false;
+    }
 }
 
 int Connection::getTotalBytesSent() {

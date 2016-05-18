@@ -20,7 +20,7 @@ bool HttpServer::Middleware::BodyParser::QueryString::resolve(HttpServer::Reques
     return false;
 }
 
-std::vector<HttpServer::Request::QueryStringParameter *> & HttpServer::Middleware::BodyParser::QueryString::parseParams(
+std::vector<HttpServer::Request::QueryStringParameter *> HttpServer::Middleware::BodyParser::QueryString::parseParams(
         std::vector<std::string> &params) {
 
     std::vector<HttpServer::Request::QueryStringParameter *> parsed;
@@ -56,6 +56,3 @@ std::vector<HttpServer::Request::QueryStringParameter *> & HttpServer::Middlewar
 
     return parsed;
 }
-
-
-

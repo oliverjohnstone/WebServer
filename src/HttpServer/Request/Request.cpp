@@ -13,7 +13,7 @@ HttpServer::Request::Request::Request(HttpServer::Connection *pConnection) {
 }
 
 bool HttpServer::Request::Request::parseHeaders() {
-    if (!this->parseRequestHeader(pConnection->readLine())) return false;
+    if (!parseRequestHeader(pConnection->readLine())) return false;
     do {
         string line = pConnection->readLine();
         if (line.empty()) return true;
